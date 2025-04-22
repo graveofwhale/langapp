@@ -32,7 +32,7 @@ export default function App() {
   console.log("rendering")
   useEffect(() => {
     if (y === 200) {
-      clearInterval()
+      clearInterval(intervalId)
     }
   })
   return (
