@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useState } from 'react';
-import { Animated, TouchableOpacity } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { Animated, Easing, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
 
@@ -19,16 +19,18 @@ const Box = styled.View`
 
 const AnimatedBox = Animated.createAnimatedComponent(Box); // 이 편이 import가 적다
 //const Title = styled.Animated.View``;
-
+//useState를 쓰지마라! 값을 줄땐 animated api를 이용, animate 컴포넌트는 따로 존재한다.
 export default function App() {
   const [up, setUp] = useState(false);
   const toggleUp = () => setUp((prev) => !prev)
-  const Y = new Animated.Value(0);
-  //useState를 쓰지마라! 값을 줄땐 animated api를 이용, animate 컴포넌트는 따로 존재한다.
+  const Y = useRef(new Animated.Value(0)).current;
+  //useRef쓰면 재렌더링되어도 값을 유지한다.
+
   const moveUp = () => {
 
-    Animated.spring(Y, {
-      toValue: up ? 200 : -200,
+    Animated.timing(Y, {
+      toValue: up ? 300 : -300,
+      easing: Easing.circle,
       // tension: 555,
       // friction: 1, ///마찰력
       useNativeDriver: true, // nativeDriver를 사용해야 애니메이션을 시작하기전 모든 것을 네이티브로 전송
